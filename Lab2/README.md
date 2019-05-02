@@ -1,6 +1,7 @@
 ECE 140B Group Assignment 2
 
 - We chose a dataset containing the number of searches of various diseases in the US over time. 
+  More information on the dataset can be found at https://www.kaggle.com/GoogleNewsLab/health-searches-us-county
   We chose this in particular because our project is centered around health and we wanted to get a broader sense of health concerns in the US.
 
 - The five questions we chose to answer are:
