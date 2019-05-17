@@ -22,4 +22,4 @@ Link to first video here</a>
 
 
 Challenge 3 Images
-![alt text](https://github.com/UCSD-Product-Engineering/140b-group-the_segfaults/blob/master/Lab3/challenge3.jpg)
+![alt text](https://github.com/UCSD-Product-Engineering/140b-group-the_segfaults/blob/master/Lab3/challenge3.png)
