@@ -9,14 +9,14 @@ Detected pill:
 
 Challenge 1 Video
 <a href="https://youtu.be/P4suh0F8VTo" target="_blank">
-Link to first video here</a>
+Link to video here</a>
 <a href="
 " target="_blank"></a>
 
 
 Challenge 2 Video
 <a href="https://youtu.be/JXGdeV3VO5g" target="_blank">
-Link to first video here</a>
+Link to video here</a>
 <a href="
 " target="_blank"></a>
 
