@@ -12,17 +12,35 @@
  any redistribution
 *********************************************************************/
 #include <bluefruit.h>
-//#include "pill.h"
+#include <stdlib.h>
+#include "pill.h"
 #define START_SIZE 4
 #define READ_SIZE 8
+#define DAY 7
+#define SLOT_NUM 4
+#define DAY1 '0'
+#define SLOT1 'A'
+#define SLOT_MASK 0x01
+#define BUTTON1 16
+#define BUTTON2 15
+#define BUTTON3 7
+#define BUTTON4 11
+#define LED1 30
+#define LED2 27
+#define LED3 A5
+#define LED4 A4
+#define REMINDER A3
+
+
 
 // BLE Service
 BLEDis  bledis;  // device information
 BLEUart bleuart; // uart over ble
 BLEBas  blebas;  // battery
-//TimeEntry * te;
+DayEntry_t de[DAY] = {0};
 int activeCount = 0;
-unsigned long disconnectTime;
+unsigned long lastTime;
+Time_t currTime = {0};
 void setup()
 {
   Serial.begin(115200);
@@ -114,6 +132,45 @@ int parse2(char ** part0, char ** part1, char * str, char * delim){
 }
 
 
+// TODO verify if we need to overwrite
+void parseSlot(char * slots, uint8_t * entrySlots){
+  for (uint8_t i = 0; i < strlen(slots); ++i){
+    uint8_t slot = slots[i]-SLOT1;
+    *entrySlots |= (SLOT_MASK << slot);
+  }
+}
+
+void populateTime(Time_t * t, char * hh, char * mm, char D){
+  t->hh = atoi(hh);
+  t->mm = atoi(mm);
+  t->D = D;
+}
+
+int compareTime (const void *arg1, const void *arg2)                                
+{                                                 
+  Time_t * t1 = (Time_t *)arg1;
+  Time_t * t2 = (Time_t *)arg2;
+
+  if (t1->hh < t2->hh){
+    return -1;
+  } else if (t1->hh > t2->hh){
+    return 1;
+  }
+
+  if (t1->mm < t2->mm){
+    return -1;
+  } else if (t1->mm > t2->mm){
+    return 1;
+  }
+  return 0;                            
+} 
+
+int compareTimeEntry (const void *arg1, const void *arg2)                                
+{                                                 
+  TimeEntry_t * t1 = (TimeEntry_t *)arg1;
+  TimeEntry_t * t2 = (TimeEntry_t *)arg2;
+  return compareTime(t1->t, t2->t);                       
+} 
 void loop()
 {
   
@@ -158,6 +215,11 @@ void loop()
        }
   
        Serial.printf("%s %s %s\n", hh, mm, D);
+       populateTime(&currTime, hh, mm, D[0]-DAY1);
+       // Populate current time
+       //currTime.hh = atoi(hh);
+       //currTime.mm = atoi(mm);
+       //currTime.D = atoi(D);
     }
  
     else{
@@ -177,65 +239,51 @@ void loop()
          if(hh==NULL||mm==NULL||D == NULL|| Slot==NULL){
            Serial.print("error parsing current time\n");
          }
-  
+
+        for (uint8_t i = 0; i < strlen(D); ++i){
+          uint8_t day = D[i]-DAY1;
+          DayEntry_t dayEntry = de[day];
+          TimeEntry_t * timeEntry = NULL;
+          if(dayEntry.count == 0){
+            dayEntry.te = (TimeEntry_t *)calloc(1, sizeof(TimeEntry_t));
+            if(dayEntry.te == NULL){
+              Serial.print("Memory allocation error.");
+              continue;
+            }
+            timeEntry = dayEntry.te;
+          } else {
+            TimeEntry_t * tmp = (TimeEntry_t *)realloc(dayEntry.te, sizeof(TimeEntry_t)*(dayEntry.count+1));
+            if(tmp == NULL){
+              Serial.print("Memory allocation error.");
+              continue;
+            }
+            dayEntry.te = tmp;
+            timeEntry = &(dayEntry.te[dayEntry.count]);
+          }
+          dayEntry.count++;
+          parseSlot(Slot, &(timeEntry->slots));
+          populateTime(timeEntry->t, hh, mm, day);
+          qsort(dayEntry.te, dayEntry.count, sizeof(TimeEntry_t), compareTimeEntry);
+        }
+        
         Serial.printf("%s %s %s %s\n", hh, mm, D, Slot);
         token = strtok_r(savePtr_a, "#", &savePtr_a);
       }
     }
   }
   free(buf);
-  /*
-  
-  char * savePtr_a = NULL;
-      char * token = strtok_r(buf+1, "#", &savePtr_a);
-      if(token == null){
-        Serial.print("Error parsing received message.");
-      }
 
-      while(token != null){
-        char * token_time;
-        char * token_slot;
-        if(!parse2(&token_time, &token_slot, token, ",")){
-          token = strtok_r(savePtr_a, "#", &savePtr_a);
-          continue;
-        }
+  // If connected, use current time
+  if(Bluefruit.connected()){
+    DayEntry dayEntry = de[currTime.D];
     
-        // Parsing the time and slots
-        char * time0;
-        char * time1;
-        char * slot0;
-        char * slot11;
-        if(!parse2(&time0, &time1, token_time, ":") || !parse2(&slot0, &slot1, token_time, ":")){
-          token = strtok_r(savePtr_a, "#", &savePtr_a);
-          continue;
-        }
-  
-    // If key is different from what is expected
-    if(strcmp(time0, "Time")!=0 || strcmp(slot0, "Slot")){
-      Serial.print("error parsing command");
-    }
-
-    
-    // Allocate space for one more
-    TimeEntry * t0 = realloc(te, sizeof(TimeEntry) * (activeCount + 1));
-    if (t0 == null){
-      Serial.print("realloc failed");
-    }
-    
-    // Parse the slot number
-    t0[activeCount].slot = (uint8_t)atol(slot1);
-    t0[activeCount].t = parseTime(time1);
-    t0[activeCount].active = 1;
-
-    activeCount++;
-    
-    token = strtok_r(savePtr_a, "#", &savePtr_a);
-    
-    
+  } else {
+    unsigned long timeEllapsed = millis() - lastTime;
+    updateTime(&currTime, timeEllapsed);
   }
   
-  TimeEntry * te;
-  // Forward data from HW Serial to BLEUART
+  /*
+  
   while (Serial.available())
   {
     // Delay to wait for enough input, since we have a limited transmission buffer
@@ -252,25 +300,17 @@ void loop()
   waitForEvent();
   */
 }
-/*
-Time_t * parseTime(char * str){
-  char * dd = strtok(str, "-");
-  char * hh = strtok(NULL, "-");
-  char * mm = strtok(NULL, "-");
-  char * ss = strtok(NULL, "-");
-  if(dd == NULL || hh == NULL | mm == NULL | ss == NULL){
-    Serial.print("Error parsing time.");
-    return 0;
-  }
-  
-  Time_t * t = calloc(sizeof(Time));
-  t->dd = atol(dd);
-  t->hh = atol(hh);
-  t->mm = atol(mm);
-  t->ss = atol(ss);
-  return t;
-  
-}*/
+
+void updateTime(Time_t * t, unsigned long timeEllapsed){
+  uint32_t minutes = timeEllapsed / 60000;
+  uint8_t hour = minutes/60;
+  minutes %= 60;
+  uint16_t mmAdded = t->mm + minutes;
+  t->mm = mmAdded % 60;
+  uint16_t hhAdded = mmAdded/60 + tt->h + hour;
+  t->hh = hhAdded % 24;
+  t->D = (t->D + hhAdded / 24 ) % 7;
+}
 // callback invoked when central connects
 void connect_callback(uint16_t conn_handle)
 {
@@ -297,5 +337,6 @@ void disconnect_callback(uint16_t conn_handle, uint8_t reason)
 
   Serial.println();
   Serial.println("Disconnected");
+  lastTime = millis();
 
 }
