@@ -1,50 +1,10 @@
 import React from 'react';
 import { AppRegistry, TabBarIOS, StyleSheet, Text, View, Button} from 'react-native';
-import HomePage from './components/HomePage/HomePage';
+//import HomePage from './components/HomePage/HomePage';
+import PillMenu from './components/PillMenu/PillMenu';
 import Settings from './components/Settings/Settings';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 //import Icon from 'react-native-vector-icons/FontAwesome'; // use for tab icons
-
-/*
-export default class StarterTabBarIOS extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {selectedTab: 'tabHistory'};
-  }
-
-  setTab(tabId) {
-    this.setState({selectedTab: tabId});
-  }
-
-  render() {
-    return (
-      <TabBarIOS>
-        <TabBarIOS.Item
-          title={ 'Dosage History' }
-          selected={this.state.selectedTab === 'tabHistory'}
-          onPress={() => this.setTab('tabHistory')}>
-          <TabHistory/>
-        </TabBarIOS.Item>
-
-        <TabBarIOS.Item
-          title={ 'Manage Pills' }
-          selected={this.state.selectedTab === 'tabPills'}
-          onPress={() => this.setTab('tabPills')}>
-          <TabPills/>
-        </TabBarIOS.Item>
-
-        <TabBarIOS.Item
-          title={ 'Settings' }
-          selected={this.state.selectedTab === 'tabSettings'}
-          onPress={() => this.setTab('tabSettings')}>
-          <TabSettings/>
-        </TabBarIOS.Item>
-      </TabBarIOS>
-    );
-  }
-
-}*/
 
 /**
  * History Tab
@@ -68,7 +28,7 @@ class TabPills extends React.Component {
 
   render() {
     return (
-        <HomePage/>
+        <PillMenu/>
     );
   }
 
