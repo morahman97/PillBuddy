@@ -1,67 +1,53 @@
-import React from 'react';
-import { AppRegistry, TabBarIOS, StyleSheet, Text, View, Button} from 'react-native';
-//import HomePage from './components/HomePage/HomePage';
-import PillMenu from './components/PillMenu/PillMenu';
-import Settings from './components/Settings/Settings';
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-//import Icon from 'react-native-vector-icons/FontAwesome'; // use for tab icons
+import React, { Component } from 'react';
+import { View, Button} from 'react-native';
+import firebase from 'firebase';
+import Menu from './components/Menu/Menu';
+import Header from './Header';
+import LoginForm from './LoginForm';
 
-/**
- * History Tab
- */
-class TabHistory extends React.Component {
-
+export default class App extends Component {
+  state = { loggedIn: null };
+  componentDidMount() {
+    let config = {
+      apiKey: "AIzaSyDrnrsaVw0RLyz6Gf-Ezd0dUK81DCQkCP4",
+      authDomain: "pill-buddy.firebaseapp.com",
+      databaseURL: "https://pill-buddy.firebaseio.com",
+      projectId: "pill-buddy",
+      storageBucket: "pill-buddy.appspot.com",
+      messagingSenderId: "773140406620",
+      appId: "1:773140406620:web:76284dc0f19fbe9f"
+    };
+    firebase.initializeApp(config);
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ loggedIn: true })
+      } else {
+        this.setState({ loggedIn: false })
+      }
+    })
+  }
+  renderComponent() {
+    if (this.state.loggedIn) {
+      return (
+       /*<Button
+        title="Sign out"
+        onPress={() => firebase.auth().signOut()}
+        />*/
+        <Menu/>
+      );
+    } else {
+      return (
+        <LoginForm />
+      );
+    }
+  }
   render() {
     return (
-      <View style={styles.tabContent}>
-        <Text style={styles.tabText}>Dosage History</Text>
-      </View>
+      this.renderComponent()
+/*      <View>
+        <Header title='PillBuddy' />
+        {this.renderComponent()}
+      </View>*/
     );
   }
-
 }
-
-/**
- * Pills Tab
- */
-class TabPills extends React.Component {
-
-  render() {
-    return (
-        <PillMenu/>
-    );
-  }
-
-}
-
-/**
- * Settings Tab
- */
-class TabSettings extends React.Component {
-
-  render() {
-    return (
-      <Settings/>
-    );
-  }
-
-}
-
-const TabNavigator = createBottomTabNavigator({
-  History: TabHistory,
-  Pills: TabPills,
-  Settings: TabSettings,
-});
-
-var styles = StyleSheet.create({
-  tabContent: {
-    flex: 1,
-    alignItems: 'center'
-  },
-  tabText: {
-    margin: 50,
-    fontSize: 40
-  }
-});
-
-export default createAppContainer(TabNavigator);

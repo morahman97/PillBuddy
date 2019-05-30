@@ -3,22 +3,6 @@ import { StyleSheet, Text, View, TextInput, Button,TouchableOpacity, TouchableWi
 import { CheckBox } from 'react-native-elements'
 import DateTimePicker from "react-native-modal-datetime-picker"
 
-var firebase = require("firebase");
-
-var config = {
-  apiKey: "AIzaSyDrnrsaVw0RLyz6Gf-Ezd0dUK81DCQkCP4",
-  authDomain: "pill-buddy.firebaseapp.com",
-  databaseURL: "https://pill-buddy.firebaseio.com",
-  projectId: "pill-buddy",
-  storageBucket: "pill-buddy.appspot.com",
-  messagingSenderId: "773140406620",
-  appId: "1:773140406620:web:76284dc0f19fbe9f"
-};
-// Initialize Firebase
-firebase.initializeApp(config);
-
-
-
 export default class HomePage extends React.Component {
   constructor(props) {
     super(props);
