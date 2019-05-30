@@ -3,6 +3,7 @@ import { Button, View, Text, StyleSheet } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import HomePage from '../../components/HomePage/HomePage';
+import ViewPills from '../../components/ViewPills/ViewPills';
 
 class MenuScreen extends React.Component {
   render() {
@@ -12,6 +13,10 @@ class MenuScreen extends React.Component {
         <Button
           title="Input a new pill"
           onPress={() => this.props.navigation.navigate('Input')}
+        />
+        <Button
+          title="View my pills"
+          onPress={() => this.props.navigation.navigate('View')}
         />
       </View>
     );
@@ -26,10 +31,20 @@ class InputScreen extends React.Component {
   }
 }
 
+class ViewScreen extends React.Component {
+  render() {
+    return (
+        <ViewPills/>
+    );
+  }
+}
+
+
 const RootStack = createStackNavigator(
   {
     Menu: MenuScreen,
     Input: InputScreen,
+    View: ViewScreen,
   },
   {
     initialRouteName: 'Menu',
