@@ -57,6 +57,9 @@ export default class LoginForm extends React.Component {
   render() {
     return (
       <View>
+        <Text style = {styles.viewStyles}>
+          PillBuddy
+        </Text>
         <Input label="Email"
           placeholder="user@mail.com"
           value={this.state.email}
@@ -84,5 +87,19 @@ const styles = {
     fontSize: 18,
     alignSelf: 'center',
     color: 'red'
+  },
+  viewStyles: {
+    margin: 9,
+    padding: 9,
+    fontSize: 32,
+    shadowColor: '#ddd',
+    backgroundColor: '#f8f8f8',
+    height: 60,
+    paddingTop: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    borderColor: '#fff',
+    borderBottomWidth: 4,
   }
 }
