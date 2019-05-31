@@ -29,10 +29,6 @@ export default class App extends Component {
   renderComponent() {
     if (this.state.loggedIn) {
       return (
-       /*<Button
-        title="Sign out"
-        onPress={() => firebase.auth().signOut()}
-        />*/
         <Menu/>
       );
     } else {
@@ -44,10 +40,6 @@ export default class App extends Component {
   render() {
     return (
       this.renderComponent()
-/*      <View>
-        <Header title='PillBuddy' />
-        {this.renderComponent()}
-      </View>*/
     );
   }
 }
