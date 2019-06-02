@@ -28,7 +28,7 @@ export default class InputPillForm extends React.Component {
     render() {
         return (
             <View style={styles.page}>
-                <View style={styles.viewStyles}>
+                <View style={styles.container}>
                     <Text>Enter Pill Information</Text>
                 </View>
                 <View style={styles.container}>
@@ -82,18 +82,4 @@ const styles = StyleSheet.create({
     activeTitle: {
       color: 'red',
     },
-    viewStyles: {
-      margin: 9,
-      padding: 9,
-      fontSize: 32,
-      shadowColor: '#ddd',
-      backgroundColor: '#f8f8f8',
-      height: 60,
-      paddingTop: 25,
-      justifyContent: 'center',
-      alignItems: 'center',
-      textAlign: 'center',
-      borderColor: '#fff',
-      borderBottomWidth: 4,
-    }
   });

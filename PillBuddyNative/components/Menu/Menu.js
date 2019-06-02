@@ -4,8 +4,6 @@ import { AppRegistry, TabBarIOS, StyleSheet, Text, View, Button} from 'react-nat
 import PillMenu from '../PillMenu/PillMenu';
 import Settings from '../Settings/Settings';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import firebase from 'firebase';
-
 //import Icon from 'react-native-vector-icons/FontAwesome'; // use for tab icons
 
 /**

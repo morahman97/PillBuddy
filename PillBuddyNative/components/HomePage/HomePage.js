@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, Button,TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 import DateTimePicker from "react-native-modal-datetime-picker"
-import firebase from 'firebase'
 
 export default class HomePage extends React.Component {
   constructor(props) {
@@ -58,8 +57,7 @@ export default class HomePage extends React.Component {
   }
 
   writeUserData = (pillName, days,times, doses) => {
-    var userId = firebase.auth().currentUser.uid;
-    firebase.database().ref('PillInfo/' + userId).push({
+    firebase.database().ref('PillInfo/').push({
         pillName,
         days,
         times,
