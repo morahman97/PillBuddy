@@ -2,7 +2,24 @@ import React from 'react';
 import { StyleSheet, Alert, Text, View, TextInput, Button,TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 import DateTimePicker from "react-native-modal-datetime-picker"
-import firebase from 'firebase'
+
+var firebase = require("firebase");
+
+var config = {
+  apiKey: "AIzaSyDrnrsaVw0RLyz6Gf-Ezd0dUK81DCQkCP4",
+  authDomain: "pill-buddy.firebaseapp.com",
+  databaseURL: "https://pill-buddy.firebaseio.com",
+  projectId: "pill-buddy",
+  storageBucket: "pill-buddy.appspot.com",
+  messagingSenderId: "773140406620",
+  appId: "1:773140406620:web:76284dc0f19fbe9f"
+};
+// Initialize Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+}
+
+
 
 export default class HomePage extends React.Component {
   constructor(props) {
@@ -12,6 +29,7 @@ export default class HomePage extends React.Component {
       inputName: '',
       inputDays: [],
       inputTime: [], 
+      pillSlots: [],
       numDoses: ''
     };
   }
@@ -25,9 +43,11 @@ export default class HomePage extends React.Component {
 
   handleDatePicked = date => {
     console.log("A date has been picked: ", date);
+    date = JSON.stringify(date)
     var tempArray = this.state.inputTime;
-    tempArray.push(JSON.stringify(date));
-    //console.log(JSON.stringify(date).splice(date.indexOf('T'),date.length - 1))
+    date = date.substring(date.indexOf('T')+1,date.length - 9).split(':').join('-') + '-'
+    tempArray.push(date);
+    console.log(date)
     console.log("Data is  " + tempArray)
     this.setState({
       inputTime: tempArray
@@ -45,21 +65,48 @@ export default class HomePage extends React.Component {
       this.setState({
         inputDays: tempArray
       });
-      this.style = styles.inactiveCheckbox;
     }
     else {
       tempArray.push(day)
       this.setState({
         inputDays: tempArray
       });
-      this.style = styles.activeCheckbox;
     }
     console.log(this.state.inputDays)
   }
 
-  writeUserData = (pillName, days,times, doses) => {
-    userId = firebase.auth().currentUser.uid
-    firebase.database().ref('PillInfo/' + userId).push({
+  toggleSlot = slotNum => {
+    var tempArray = this.state.pillSlots;
+    var slotFound = this.state.pillSlots.includes(slotNum);
+
+    if (slotFound) {
+      tempArray.splice(tempArray.indexOf(slotNum), 1)
+      this.setState({
+        pillSlots: tempArray
+      });
+    }
+    else {
+      tempArray.push(slotNum)
+      this.setState({
+        pillSlots: tempArray
+      });
+    }
+  }
+
+  writeUserData = (pillName, days,times, pillSlots, doses) => {
+    times = times.map(time =>{
+      days.forEach(day => {
+        return time += JSON.stringify(day)
+        
+      });
+      time+= '-'
+      pillSlots.forEach(slot => {
+        return time += JSON.stringify(slot)
+      });
+      return time
+    })
+    console.log(times)
+    firebase.database().ref('PillInfo/').push({
         pillName,
         days,
         times,
@@ -79,9 +126,6 @@ export default class HomePage extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.background}>
-          <View style={styles.title}>
-            <Text>PillBuddy</Text>
-          </View>
           <View style={styles.page}>
             <View style={styles.container}>
                 <Text>Enter Pill Information</Text>
@@ -100,37 +144,27 @@ export default class HomePage extends React.Component {
                 onCancel={this.hideDateTimePicker}
                 mode = {'time'}
             />
-            <View style={styles.container}>
-                <TextInput 
-                    placeholder='Choose doses'
-                    keyboardType='numeric'
-                    value={this.state.myNumber}
-                    maxLength={10}  //setting limit of input
-                    onChangeText={(text) => this.setState({numDoses: text})}
-                />
-            </View> 
           </View>
-          <Button title="Add Pill" onPress={() => this.writeUserData(this.state.inputName, this.state.inputDays, this.state.inputTime, JSON.stringify(this.state.numDoses))} />
           <View style={styles.checkboxContainer}>             
-            <TouchableOpacity style={this.state.inputDays.includes('Su')? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay('Su')}>
+            <TouchableOpacity style={this.state.inputDays.includes(0)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(0)}>
               <Text>Su</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes('M')? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay('M')}>
+            <TouchableOpacity style={this.state.inputDays.includes(1)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(1)}>
               <Text>M</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes('Tu')? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay('Tu')}>
+            <TouchableOpacity style={this.state.inputDays.includes(2)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(2)}>
               <Text>Tu</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes('W')? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay('W')}>
+            <TouchableOpacity style={this.state.inputDays.includes(3)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(3)}>
               <Text>W</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes('Thu')? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay('Thu')}>
+            <TouchableOpacity style={this.state.inputDays.includes(4)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(4)}>
               <Text>Thu</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes('F')? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay('F')}>
+            <TouchableOpacity style={this.state.inputDays.includes(5)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(5)}>
               <Text>F</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes('Sa')? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay('Sa')}>
+            <TouchableOpacity style={this.state.inputDays.includes(6)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(6)}>
               <Text>Sa</Text>
             </TouchableOpacity>
           </View>
@@ -142,7 +176,24 @@ export default class HomePage extends React.Component {
               {this.state.inputTime.map(time => {return <Text>{time}</Text>})}
               </View>
               
-            </View>
+          </View>
+          <View style={styles.checkboxContainer}>
+            <TouchableOpacity style={this.state.pillSlots.includes(0)? styles.activePillSlot: styles.inactivePillSlot} onPress={() => this.toggleSlot(0)}><Text>A</Text></TouchableOpacity>
+            <TouchableOpacity style={this.state.pillSlots.includes(1)? styles.activePillSlot: styles.inactivePillSlot} onPress={() => this.toggleSlot(1)}><Text>B</Text></TouchableOpacity>
+            <TouchableOpacity style={this.state.pillSlots.includes(2)? styles.activePillSlot: styles.inactivePillSlot} onPress={() => this.toggleSlot(2)}><Text>C</Text></TouchableOpacity>
+            <TouchableOpacity style={this.state.pillSlots.includes(3)? styles.activePillSlot: styles.inactivePillSlot} onPress={() => this.toggleSlot(3)}><Text>D</Text></TouchableOpacity>
+          </View>
+          
+          <Button title="Add Pill" onPress={() => this.writeUserData(this.state.inputName, this.state.inputDays, this.state.inputTime, this.state.pillSlots, this.state.numDoses)} />
+          <View style={styles.container}>
+            <TextInput 
+                placeholder='Choose doses'
+                keyboardType='numeric'
+                value={this.state.myNumber}
+                maxLength={10}  //setting limit of input
+                onChangeText={(text) => this.setState({numDoses: text})}
+            />
+          </View> 
         </View>
       </TouchableWithoutFeedback>
     );
@@ -152,8 +203,9 @@ export default class HomePage extends React.Component {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+    flexDirection: 'column',
     backgroundColor: '#4285f4',
-    padding: 40
+    padding: 10
   },
   title: {
     height: 50,
@@ -191,18 +243,32 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   activeCheckbox: {
-    width: 30,
-    height: 30,
+    width: 50,
+    height: 50,
     backgroundColor: 'green',
     justifyContent: 'center', 
     alignItems: 'center'
   },
   inactiveCheckbox: {
-    width: 30,
-    height: 30,
+    width: 50,
+    height: 50,
     backgroundColor: 'white',
     justifyContent: 'center', 
     alignItems: 'center'
+  },
+  activePillSlot: {
+    width: 75,
+    height: 80,
+    backgroundColor: 'green',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  inactivePillSlot: {
+    width: 75,
+    height: 80,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   checkboxContainer: {
     flex: 1,
