@@ -18,7 +18,9 @@ export default class App extends Component {
       messagingSenderId: "773140406620",
       appId: "1:773140406620:web:76284dc0f19fbe9f"
     };
-    firebase.initializeApp(config);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(config);
+    }
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({ loggedIn: true })
