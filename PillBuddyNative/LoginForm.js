@@ -1,7 +1,8 @@
 import React from "react"
-import { StyleSheet, Text, View, Image, Button, ActivityIndicator } from "react-native"
+import { StyleSheet, Text, View, ImageBackground, ActivityIndicator } from "react-native"
 import firebase from "firebase"
 import Input from './Input';
+import { Button } from 'react-native-elements';
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -61,13 +62,13 @@ export default class LoginForm extends React.Component {
           PillBuddy
         </Text>
         <Input label="Email"
-          placeholder="user@mail.com"
+          placeholder="Email"
           value={this.state.email}
           secureTextEntry={false}
           onChangeText={email => this.setState({ email })}
           />
         <Input label="Password"
-          placeholder="password"
+          placeholder="Password"
           value={this.state.password}
           secureTextEntry={true}
           onChangeText={password => this.setState({ password })}

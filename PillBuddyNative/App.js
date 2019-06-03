@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import Menu from './components/Menu/Menu';
 import Header from './Header';
 import LoginForm from './LoginForm';
+import LoginScreen from './LoginScreen';
 
 export default class App extends Component {
   state = { loggedIn: null };
@@ -37,7 +38,7 @@ export default class App extends Component {
       );
     } else {
       return (
-        <LoginForm />
+        <LoginScreen />
       );
     }
   }

@@ -12,31 +12,29 @@ const styles = StyleSheet.create({
   })
 
 export default class ViewPills extends Component {
-
-    state = {
-        pills: []
-    }
-    
-
-    componentDidMount() {
-        let userId = firebase.auth().currentUser.uid
-        let pillsRef = firebase.database().ref('PillInfo/' + userId);
-        pillsRef.on('value', (snapshot) => {
-            let data = snapshot.val();
-            let pills = Object.values(data);
-            this.setState({pills});
-         });
-    }
-    
-    render() {
-        return (
-            <View style={styles.container}>
-                {
-                    this.state.pills.length > 0
-                    ? <PillComponent pills={this.state.pills} />
-                    : <Text>No pills!</Text>
-                }
-            </View>
-        )
-    }
+  state = {
+    pills: []
+  }
+  
+  componentDidMount() {
+    let userId = firebase.auth().currentUser.uid
+    let pillsRef = firebase.database().ref('PillInfo/' + userId);
+    pillsRef.on('value', (snapshot) => {
+        let data = snapshot.val();
+        let pills = Object.values(data);
+        this.setState({pills});
+     });
+  }
+  
+  render() {
+    return (
+      <View style={styles.container}>
+        {
+          this.state.pills.length > 0
+          ? <PillComponent pills={this.state.pills} />
+          : <Text>No pills!</Text>
+        }
+      </View>
+    )
+  }
 }

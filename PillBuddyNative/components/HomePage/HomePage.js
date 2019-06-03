@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, AlertIOS, Text, View, TextInput, Button,TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, Alert, Text, View, TextInput, Button,TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 import DateTimePicker from "react-native-modal-datetime-picker"
 import firebase from 'firebase'
@@ -72,7 +72,7 @@ export default class HomePage extends React.Component {
         //error callback
         console.log('error ' , error)
     })
-    AlertIOS.alert('Pill saved successfully!')
+    Alert.alert('Pill saved successfully!')
   }
 
   render() {

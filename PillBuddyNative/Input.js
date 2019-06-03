@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 const input = (props) => {
   return (
     <View style={styles.viewStyles} >
@@ -19,9 +19,10 @@ const styles = {
     margin: 9,
     padding: 9,
     paddingTop: 14,
-    borderColor: '#fff',
     height: 50,
     flex: 3,
+    borderColor: 'silver',
+    justifyContent: 'center',
     flexDirection: "row",
     alignItems: "center"
   },
