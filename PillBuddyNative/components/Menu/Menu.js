@@ -3,7 +3,11 @@ import { AppRegistry, TabBarIOS, StyleSheet, Text, View, Button} from 'react-nat
 //import HomePage from './components/HomePage/HomePage';
 import PillMenu from '../PillMenu/PillMenu';
 import Settings from '../Settings/Settings';
+import PillBarChart from '../PillBarChart/PillBarChart'
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import firebase from 'firebase';
+import AnalyticsPage from '../AnalyticsPage/AnalyticsPage'
+
 //import Icon from 'react-native-vector-icons/FontAwesome'; // use for tab icons
 
 /**
@@ -47,10 +51,19 @@ class TabSettings extends React.Component {
 
 }
 
+class TabAnalytics extends React.Component {
+  
+  render() {
+    return (
+      <AnalyticsPage/>
+    )
+  }
+}
 const TabNavigator = createBottomTabNavigator({
   History: TabHistory,
   Pills: TabPills,
   Settings: TabSettings,
+  BarChart: TabAnalytics
 });
 
 var styles = StyleSheet.create({
