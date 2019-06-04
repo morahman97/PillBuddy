@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, ActivityIndicator, Image, StyleSheet, View } from "react-native";
+import { ImageBackground, Text, ActivityIndicator, Image, StyleSheet, View } from "react-native";
 import Button from "./components/Login/Button";
 import FormTextInput from "./components/Login/FormTextInput";
 import colors from "./components/config/colors";
@@ -75,6 +75,7 @@ class LoginScreen extends React.Component<{}, State> {
     return (
       <View style={styles.container}>
         <View style={styles.form}>
+          <Text style={styles.tabText}>PillBuddy</Text>
           <FormTextInput
             value={this.state.email}
             secureTextEntry={false}
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.WHITE,
     alignItems: "center",
+    justifyContent: "center",
     justifyContent: "space-between"
   },
   errorTextStyle: {
@@ -119,6 +121,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     width: "80%"
+  },
+  tabText: {
+    margin: 50,
+    fontSize: 40
   }
 });
 
