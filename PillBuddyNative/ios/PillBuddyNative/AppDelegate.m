@@ -47,6 +47,26 @@
 {
   [FIRApp configure];
   [RNFirebaseNotifications configure];
+  UIUserNotificationSettings *settings =
+  [UIUserNotificationSettings
+   settingsForTypes: (UIUserNotificationTypeBadge |
+                      UIUserNotificationTypeSound |
+                      UIUserNotificationTypeAlert)
+   categories:nil];
+  
+  [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+  
+  UIUserNotificationType types = UIUserNotificationTypeBadge |
+  UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+  
+  UIUserNotificationSettings *mySettings =
+  
+  [UIUserNotificationSettings settingsForTypes:types categories:nil];
+  
+  [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+  
+  [[UIApplication sharedApplication] registerForRemoteNotifications];
+  
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"PillBuddyNative"
@@ -73,14 +93,17 @@
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
   [[RNFirebaseNotifications instance] didReceiveLocalNotification:notification];
+  [RCTPushNotificationManager didReceiveLocalNotification:notification];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo
 fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler{
   [[RNFirebaseNotifications instance] didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+  [RCTPushNotificationManager didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
 }
 
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+  [RCTPushNotificationManager didRegisterUserNotificationSettings:notificationSettings];
   [[RNFirebaseMessaging instance] didRegisterUserNotificationSettings:notificationSettings];
 }
 
