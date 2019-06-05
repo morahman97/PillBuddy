@@ -106,11 +106,13 @@ export default class HomePage extends React.Component {
       return time
     })
     console.log(times)
-    firebase.database().ref('PillInfo/').push({
+    userId = firebase.auth().currentUser.uid
+    firebase.database().ref('PillInfo/' + userId).push({
         pillName,
+        doses,
         days,
         times,
-        doses
+        pillSlots
     }).then((data)=>{
         //success callback
         console.log('data ' , data)

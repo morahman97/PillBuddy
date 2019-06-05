@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ImageBackground, Text, ActivityIndicator, Image, StyleSheet, View } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, ImageBackground, Text, ActivityIndicator, Image, StyleSheet, View } from "react-native";
 import Button from "./components/Login/Button";
 import FormTextInput from "./components/Login/FormTextInput";
 import colors from "./components/config/colors";
@@ -73,6 +73,7 @@ class LoginScreen extends React.Component<{}, State> {
 
   render() {
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.form}>
           <Text style={styles.tabText}>PillBuddy</Text>
@@ -94,6 +95,7 @@ class LoginScreen extends React.Component<{}, State> {
           </Text>
         </View>
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
