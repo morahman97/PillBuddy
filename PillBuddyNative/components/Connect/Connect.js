@@ -262,6 +262,7 @@ export default class App extends Component {
           var data = bytesToString(value);
           console.log(`Recieved ${data} for characteristic ${characteristic}`);
           console.log(`Peripheral is ${peripheral}`);
+          console.log(`LIKE A SOMEBOOODY ${data}`)
           
       }
     );
