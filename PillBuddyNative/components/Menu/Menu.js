@@ -1,7 +1,8 @@
 import React from 'react';
 import { AppRegistry, TabBarIOS, StyleSheet, Text, View, Button} from 'react-native';
 //import HomePage from './components/HomePage/HomePage';
-import PillMenu from '../PillMenu/PillMenu';
+//import PillMenu from '../PillMenu/PillMenu';
+import ViewPills from "../ViewPills/ViewPills";
 import Settings from '../Settings/Settings';
 import PillBarChart from '../PillBarChart/PillBarChart'
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
@@ -32,7 +33,7 @@ class TabPills extends React.Component {
 
   render() {
     return (
-        <PillMenu/>
+        <ViewPills/>
     );
   }
 
