@@ -93,7 +93,33 @@ export default class HomePage extends React.Component {
     }
   }
 
+  updatePillTakenSchedule = () => {
+    let userId = firebase.auth().currentUser.uid;
+    let pillsRef = firebase.database().ref('PillInfo/' + userId);
+    pillsRef.on('value', (snapshot) => {
+        let data = snapshot.val();
+        let pills = Object.values(data);
+        console.log("The Data");
+        console.log(data);
+        console.log(pills);
+        let daysTakenJSON = {'Su':{}, 'M':{}, 'Tu':{}, 'W':{}, 'Thu':{}, 'F':{}, 'Sa':{}};
+        for (var obj in pills) {
+          console.log(obj)
+          obj['days'].forEach(day => {
+            let timeToTake = {}
+            obj['times'].forEach(time => {
+              timeToTake[time] = {'taken': false}
+            });
+            daysTakenJSON[day][obj['pillName']] = timeToTake
+          });
+        }
+        console.log("See the days taken json")
+        console.log(daysTakenJSON)
+     });
+  }
+
   writeUserData = (pillName, days,times, pillSlots, doses) => {
+    console.log(times);
     times = times.map(time =>{
       days.forEach(day => {
         return time += JSON.stringify(day)
@@ -121,6 +147,7 @@ export default class HomePage extends React.Component {
         //error callback
         console.log('error ' , error)
     })
+    //this.updatePillTakenSchedule();
     Alert.alert('Pill saved successfully!')
   }
 
