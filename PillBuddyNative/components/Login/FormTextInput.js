@@ -19,10 +19,7 @@ class FormTextInput extends React.Component<Props> {
         selectionColor={colors.DODGER_BLUE}
         autoCorrect={false}
         autoCapitalize = 'none'
-        // Add the externally specified style to our own
-        // custom one
         style={[styles.textInput, style]}
-        // ...and then spread all the other props
         {...otherProps}
       />
     );
@@ -32,9 +29,10 @@ class FormTextInput extends React.Component<Props> {
 const styles = StyleSheet.create({
   textInput: {
     height: 40,
-    borderColor: colors.SILVER,
+    borderColor: 'white',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 20
+    marginBottom: 20,
+    color: 'white'
   }
 });
 

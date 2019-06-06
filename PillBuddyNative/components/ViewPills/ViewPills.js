@@ -9,7 +9,8 @@ import HomePage from '../../components/HomePage/HomePage';
 const styles = StyleSheet.create({
   tabText: {
     margin: 50,
-    fontSize: 40
+    fontSize: 40,
+    alignSelf: "center"
   },
   container: {
     flex: 1,

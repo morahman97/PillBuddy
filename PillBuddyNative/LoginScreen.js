@@ -74,6 +74,7 @@ class LoginScreen extends React.Component<{}, State> {
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ImageBackground style={styles.background} source={require("./assets/background.jpg")}>
       <View style={styles.container}>
         <View style={styles.form}>
           <Text style={styles.tabText}>PillBuddy</Text>
@@ -95,6 +96,7 @@ class LoginScreen extends React.Component<{}, State> {
           </Text>
         </View>
       </View>
+      </ImageBackground>
       </TouchableWithoutFeedback>
     );
   }
@@ -103,10 +105,15 @@ class LoginScreen extends React.Component<{}, State> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.WHITE,
+    //backgroundColor: colors.WHITE,
     alignItems: "center",
     justifyContent: "center",
     justifyContent: "space-between"
+  },
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%'
   },
   errorTextStyle: {
     fontSize: 18,
@@ -125,8 +132,10 @@ const styles = StyleSheet.create({
     width: "80%"
   },
   tabText: {
+    color: 'white',
     margin: 50,
-    fontSize: 40
+    fontSize: 50,
+    alignSelf: "center"
   }
 });
 
