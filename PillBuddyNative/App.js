@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Button, AsyncStorage, Alert, Platform} from 'react-native';
+import { View, Button, AsyncStorage, Alert, Platform, PushNotificationIOS} from 'react-native';
 //import RNFirebase from 'react-native-firebase';
 import firebase from 'firebase';
 import Menu from './components/Menu/Menu';
@@ -28,6 +28,7 @@ export default class App extends Component {
         this.setState({ loggedIn: false })
       }
     })
+    PushNotificationIOS.requestPermissions([permissions]);
     this.checkPermission();
     this.createNotificationListeners();
   }
