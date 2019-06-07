@@ -30,8 +30,42 @@ export default class AnalyticsPage extends React.Component {
         super(props)
         this.state = {
             displayData: false, 
+            dataToDisplay: []
         };
     } 
+
+    componentDidMount() {
+        let userId = firebase.auth().currentUser.uid
+        let pillsRef = firebase.database().ref('PillInfo/' + userId + '/MetaInfo');
+        pillsRef.limitToLast(1).on('value', (snapshot) => {
+            let data = snapshot.val();
+            let metaInfo = Object.values(data);
+            console.log("printing out pill data")
+            console.log(metaInfo[0]['daysTakenJSON'][0])
+            var tempArray = this.parsePillData(metaInfo[0]['daysTakenJSON'][0]);
+            this.setState({
+                dataToDisplay: tempArray
+            })
+        });
+    }
+
+    parseTime  = (time) => {
+        timeSubstring = time.substring(0,5).split('-').join(':')
+        return timeSubstring
+    }
+
+    parsePillData = (mondayData) => {
+        let componentArray = []
+        for (var key in mondayData) {
+            if (!mondayData[key]['taken']) {
+                let textValue = <Text style={styles.missedPill}>{key}: {this.parseTime(mondayData[key][0]['time'])}</Text>
+                componentArray.push(textValue)
+            }
+        }
+        console.log(componentArray)
+        return componentArray
+        
+    }
 
     toggleDisplayData = () => {
         console.log("Hello world")
@@ -42,12 +76,16 @@ export default class AnalyticsPage extends React.Component {
     render() {
         
         const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        data1 = <View style={styles.missedPillContainer}>
+        /*data1 = <View style={styles.missedPillContainer}>
                     <Text style={styles.missedDay}>Monday</Text>
                     <Text style={styles.missedPill}>Kadian 12:00pm: 2 doses</Text>
                     <Text style={styles.missedPill}>Vicodin 4:00pm: 3 doses</Text>
                     <Text style={styles.missedPill}>Lomotil 6:00pm: 1 dose</Text>
-                </View>
+                </View>*/
+        data1 = <View style={styles.missedPillContainer}>
+            <Text style={styles.missedDay}>Monday</Text>
+            {this.state.dataToDisplay}
+        </View>
         return (
             <View style={styles.container}>
                 <View style={{alignItems: 'center'}}>

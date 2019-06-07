@@ -121,9 +121,9 @@ export default class HomePage extends React.Component {
           var obj = pills[index]
           console.log(obj['pillName'])
           obj['days'].forEach(day => {
-            let timeToTake = {}
+            let timeToTake = []
             obj['times'].forEach(time => {
-              timeToTake[time] = {'taken': false}
+              timeToTake[0] = {'time': time, 'taken': false}
             });
             daysTakenJSON[day][obj['pillName']] = timeToTake
           });

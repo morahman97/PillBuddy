@@ -25,24 +25,46 @@ export default class PillBarChart extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
-            pillData: []
+            pillData: [0,0,0,0,0,0,0]
         }
     }
     componentDidMount() {
         let userId = firebase.auth().currentUser.uid
         let pillsRef = firebase.database().ref('PillInfo/' + userId + '/MetaInfo');
-        pillsRef.on('value', (snapshot) => {
+        pillsRef.limitToLast(1).on('value', (snapshot) => {
             let data = snapshot.val();
             let metaInfo = Object.values(data);
             console.log("printing out pill data")
             console.log(metaInfo[0]['daysTakenJSON'])
+            this.parsePillData(metaInfo[0]['daysTakenJSON']);
+
         });
+    }
+
+    parsePillData = (metaData) => {
+        var tempArray = []
+        metaData.forEach((data) => {
+            let numMissed = 0
+            console.log(data)
+            for (var key in data) {
+                console.log(data[key][0]['taken'])
+                if (!data[key][0]['taken']) numMissed += 1
+            }
+            tempArray.push(numMissed);
+        });
+        console.log(tempArray)
+        this.setState({
+            pillData: tempArray
+        });
+        console.log(this.state.pillData)
     }
 
     render() {
  
         const fill = 'rgb(134, 65, 244)'
-        const data   = [ 2, 3, 0, 1, 0, 1, 3 ]
+        //let data=[0,0,0,0,0,0,0]
+        console.log(this.state.pillData)
+        var data   = this.state.pillData
         const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
         const CUT_OFF = 20
@@ -55,7 +77,8 @@ export default class PillBarChart extends React.Component {
                     fontSize={ 14 }
                     fill={ value >= CUT_OFF ? 'white' : 'black' }
                     alignmentBaseline={ 'middle' }
-                    textAnchor={ 'middle' }
+                    text
+                    Anchor={ 'middle' }
                 >
                     {value}
                 </Text>
