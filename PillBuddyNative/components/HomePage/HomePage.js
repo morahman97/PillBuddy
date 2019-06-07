@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Alert, Text, View, TextInput, Button,TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { CheckBox } from 'react-native-elements'
+import { Input } from 'react-native-elements';
 import DateTimePicker from "react-native-modal-datetime-picker"
 
 var firebase = require("firebase");
@@ -175,14 +175,20 @@ export default class HomePage extends React.Component {
     this.updatePillTakenSchedule();
     Alert.alert('Pill saved successfully!')
   }
+  someFunction = () => {
+    console.log("HELLO")
+  }
 
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.background}>
           <View style={styles.page}>
+                <Text style={styles.tabText}>Enter Pill Info</Text>
+            <Input
+              placeholder='BASIC INPUT'/>
             <View style={styles.container}>
-                <Text>Enter Pill Information</Text>
+                <Text>Enter Pill Info</Text>
             </View>
             <View style={styles.container}>
                 <TextInput
@@ -328,5 +334,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'
-  }
+  },
+  tabText: {
+    margin: 10,
+    fontSize: 40,
+    alignSelf: "center"
+  },
 });

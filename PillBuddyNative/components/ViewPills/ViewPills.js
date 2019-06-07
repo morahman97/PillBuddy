@@ -22,9 +22,26 @@ const styles = StyleSheet.create({
 class ViewPills extends Component {
   state = {
     pills: [],
-    isVisible: false
+    isVisible: false,
+    dayMap: {
+      0: 'Su', 
+      1: 'Mon', 
+      2: 'Tu',
+      3: 'Wed', 
+      4: 'Thu', 
+      5: 'Fri', 
+      6: 'Sat'
+    }
   }
   
+  parseDayPills = (itemDays) => {
+    let dayArray = []
+    itemDays.sort().forEach((day) => {
+      dayArray.push(this.state.dayMap[day])
+    })
+    return dayArray
+  }
+
   componentDidMount() {
     let userId = firebase.auth().currentUser.uid
     let pillsRef = firebase.database().ref('PillInfo/' + userId + "/Pills/");
@@ -43,7 +60,7 @@ class ViewPills extends Component {
       titleStyle={{ fontSize: 20}}
       rightTitle={item.days}
       chevron={true}
-      subtitle={JSON.stringify(item.days)}
+      subtitle={JSON.stringify(this.parseDayPills(item.days))}
       subtitleStyle={{ color: 'gray' }}
       bottomDivider={true}
       onPress={() => this.setState({ isVisible: true })}
