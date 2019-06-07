@@ -5,8 +5,40 @@ import { BarChart, Grid, XAxis} from 'react-native-svg-charts'
 import { Text } from 'react-native-svg'
 import * as scale from 'd3-scale'
 
+var firebase = require("firebase");
+
+var config = {
+  apiKey: "AIzaSyDrnrsaVw0RLyz6Gf-Ezd0dUK81DCQkCP4",
+  authDomain: "pill-buddy.firebaseapp.com",
+  databaseURL: "https://pill-buddy.firebaseio.com",
+  projectId: "pill-buddy",
+  storageBucket: "pill-buddy.appspot.com",
+  messagingSenderId: "773140406620",
+  appId: "1:773140406620:web:76284dc0f19fbe9f"
+};
+// Initialize Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+}
+
 export default class PillBarChart extends React.Component {
- 
+    constructor (props) {
+        super(props)
+        this.state = {
+            pillData: []
+        }
+    }
+    componentDidMount() {
+        let userId = firebase.auth().currentUser.uid
+        let pillsRef = firebase.database().ref('PillInfo/' + userId + '/MetaInfo');
+        pillsRef.on('value', (snapshot) => {
+            let data = snapshot.val();
+            let metaInfo = Object.values(data);
+            console.log("printing out pill data")
+            console.log(metaInfo[0]['daysTakenJSON'])
+        });
+    }
+
     render() {
  
         const fill = 'rgb(134, 65, 244)'

@@ -26,7 +26,7 @@ export default class HomePage extends React.Component {
     super(props);
     this.state = {
       isDateTimePickerVisible: false,
-      inputName: '',
+      inputName: 'Pill',
       inputDays: [],
       inputTime: [], 
       pillSlots: [],
@@ -93,18 +93,33 @@ export default class HomePage extends React.Component {
     }
   }
 
+  metaExist = () => {
+    let metaRef = firebase.database().ref('PillInfo/' + userId + '/MetaInfo')
+
+    metaRef.on('value', (snapshot) => {
+      let data = snapshot.val();
+      metaData = Object.values(data)
+      return metaData.length == 0 ? false: true
+    })
+  }
+
   updatePillTakenSchedule = () => {
+    console.log("WE EHRE EF")
     let userId = firebase.auth().currentUser.uid;
-    let pillsRef = firebase.database().ref('PillInfo/' + userId);
+    let pillsRef = firebase.database().ref('PillInfo/' + userId + '/Pills');
+    //console.log(this.metaExist())
     pillsRef.on('value', (snapshot) => {
         let data = snapshot.val();
         let pills = Object.values(data);
         console.log("The Data");
         console.log(data);
         console.log(pills);
-        let daysTakenJSON = {'Su':{}, 'M':{}, 'Tu':{}, 'W':{}, 'Thu':{}, 'F':{}, 'Sa':{}};
-        for (var obj in pills) {
-          console.log(obj)
+        let daysTakenJSON = {'0':{}, '1':{}, '2':{}, '3':{}, '4':{}, '5':{}, '6':{}};
+        for (var index in pills) {
+          console.log("Printing out obj")
+          console.log(pills[index])
+          var obj = pills[index]
+          console.log(obj['pillName'])
           obj['days'].forEach(day => {
             let timeToTake = {}
             obj['times'].forEach(time => {
@@ -114,6 +129,16 @@ export default class HomePage extends React.Component {
           });
         }
         console.log("See the days taken json")
+        firebase.database().ref('PillInfo/' + userId + '/MetaInfo').push({
+          daysTakenJSON
+        }).then((data)=>{
+          //success callback
+          console.log('data ' , data)
+          console.log(this.state)
+      }).catch((error)=>{
+          //error callback
+          console.log('error ' , error)
+      })
         console.log(daysTakenJSON)
      });
   }
@@ -133,7 +158,7 @@ export default class HomePage extends React.Component {
     })
     console.log(times)
     userId = firebase.auth().currentUser.uid
-    firebase.database().ref('PillInfo/' + userId).push({
+    firebase.database().ref('PillInfo/' + userId + '/Pills').push({
         pillName,
         doses,
         days,
@@ -147,7 +172,7 @@ export default class HomePage extends React.Component {
         //error callback
         console.log('error ' , error)
     })
-    //this.updatePillTakenSchedule();
+    this.updatePillTakenSchedule();
     Alert.alert('Pill saved successfully!')
   }
 
