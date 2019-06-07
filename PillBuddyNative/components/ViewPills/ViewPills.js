@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet} from 'react-native';
+import { FlatList, View, Text, StyleSheet} from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import PillComponent from '../PillComponent/PillComponent';
 import firebase from 'firebase'
 import FloatingActionButton from 'react-native-action-button';
 import HomePage from '../../components/HomePage/HomePage';
+import { ListItem, Overlay } from 'react-native-elements'
 
 const styles = StyleSheet.create({
   tabText: {
@@ -20,7 +21,8 @@ const styles = StyleSheet.create({
 
 class ViewPills extends Component {
   state = {
-    pills: []
+    pills: [],
+    isVisible: false
   }
   
   componentDidMount() {
@@ -33,17 +35,31 @@ class ViewPills extends Component {
     });
   }
 
+  keyExtractor = (item, index) => index.toString()
+
+  renderItem = ({ item }) => (
+    <ListItem
+      title={item.pillName}
+      titleStyle={{ fontSize: 20}}
+      rightTitle={item.days}
+      chevron={true}
+      subtitle={JSON.stringify(item.days)}
+      subtitleStyle={{ color: 'gray' }}
+      bottomDivider={true}
+      onPress={() => this.setState({ isVisible: true })}
+    />
+  )
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.tabText}>My Pills</Text>
-        {
-          this.state.pills.length > 0
-          ? <PillComponent pills={this.state.pills} />
-          : <Text>No pills!</Text>
-        }
+        <FlatList
+          keyExtractor={this.keyExtractor}
+          data={this.state.pills}
+          renderItem={this.renderItem}
+        />
         <FloatingActionButton
-          hideShadow={true} // this is to avoid a bug in the FAB library.
           buttonColor="#428AF8"
           onPress={() => this.props.navigation.navigate('Input')}/>
       </View>

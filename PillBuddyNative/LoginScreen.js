@@ -1,10 +1,12 @@
 import * as React from "react";
-import { TouchableWithoutFeedback, Keyboard, ImageBackground, Text, ActivityIndicator, Image, StyleSheet, View } from "react-native";
+import { FlatList, TouchableWithoutFeedback, Keyboard, ImageBackground, Text, ActivityIndicator, Image, StyleSheet, View } from "react-native";
 import Button from "./components/Login/Button";
 import FormTextInput from "./components/Login/FormTextInput";
 import colors from "./components/config/colors";
 import strings from "./components/config/strings";
 import firebase from "firebase"
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Input } from 'react-native-elements';
 
 interface State {
   email: string;
@@ -78,17 +80,27 @@ class LoginScreen extends React.Component<{}, State> {
       <View style={styles.container}>
         <View style={styles.form}>
           <Text style={styles.tabText}>PillBuddy</Text>
-          <FormTextInput
+          <Input
             value={this.state.email}
+            placeholder='Email'
+            autoCorrect={false}
+            color='black'
             secureTextEntry={false}
+            autoCapitalize = 'none'
+            leftIcon={{ type: 'font-awesome', name: 'user' }}
+            leftIconContainerStyle={{ marginRight:15 }}
             onChangeText={this.handleEmailChange}
-            placeholder={strings.EMAIL_PLACEHOLDER}
           />
-          <FormTextInput
+          <Input
             value={this.state.password}
+            placeholder='Password'
+            autoCorrect={false}
+            color='black'
+            autoCapitalize = 'none'
             secureTextEntry={true}
+            leftIcon={{ type: 'font-awesome', name: 'lock' }}
+            leftIconContainerStyle={{ marginRight:15 }}
             onChangeText={this.handlePasswordChange}
-            placeholder={strings.PASSWORD_PLACEHOLDER}
           />
           {this.renderButton()}
           <Text style={styles.errorTextStyle}>
@@ -132,8 +144,8 @@ const styles = StyleSheet.create({
     width: "80%"
   },
   tabText: {
-    color: 'white',
-    margin: 50,
+    color: 'black',
+    margin: 30,
     fontSize: 50,
     alignSelf: "center"
   }

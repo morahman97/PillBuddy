@@ -9,6 +9,7 @@ import LoginScreen from './LoginScreen';
 export default class App extends Component {
   state = { loggedIn: null };
   async componentDidMount() {
+    console.disableYellowBox = true;
     let config = {
       apiKey: "AIzaSyDrnrsaVw0RLyz6Gf-Ezd0dUK81DCQkCP4",
       authDomain: "pill-buddy.firebaseapp.com",
