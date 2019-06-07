@@ -1,21 +1,40 @@
 import React from 'react';
-import { Button, View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import firebase from 'firebase';
 import Connect from '../Connect/Connect';
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class SettingsScreen extends React.Component {
   render() {
     return (
       <View style={styles.tabContent}>
-        <Text style={styles.tabText}>Settings Menu</Text>
+        <Text style={styles.tabText}>Settings</Text>
         <Button
-          title="Connect a PillBuddy device"
+          title="Connect PillBuddy"
           onPress={() => this.props.navigation.navigate('Connect')}
+          icon={
+            <Icon
+              name="bluetooth-b"
+              size={20}
+              color="white"
+            />
+          }
+          titleStyle={{ marginLeft:10 }}
         />
        <Button
+          buttonStyle={{ marginTop:20 }}
           title="Sign out"
           onPress={() => firebase.auth().signOut()}
+          icon={
+            <Icon
+              name="sign-out"
+              size={20}
+              color="white"
+            />
+          }
+          titleStyle={{ marginLeft:10 }}
         />
       </View>
     );
@@ -52,7 +71,8 @@ export default class App extends React.Component {
 var styles = StyleSheet.create({
   tabContent: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'column',
   },
   tabText: {
     margin: 50,

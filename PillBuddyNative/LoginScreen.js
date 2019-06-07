@@ -87,7 +87,7 @@ class LoginScreen extends React.Component<{}, State> {
             color='black'
             secureTextEntry={false}
             autoCapitalize = 'none'
-            leftIcon={{ type: 'font-awesome', name: 'user' }}
+            leftIcon={{ type: 'antdesign', name: 'user' }}
             leftIconContainerStyle={{ marginRight:15 }}
             onChangeText={this.handleEmailChange}
           />
@@ -98,7 +98,7 @@ class LoginScreen extends React.Component<{}, State> {
             color='black'
             autoCapitalize = 'none'
             secureTextEntry={true}
-            leftIcon={{ type: 'font-awesome', name: 'lock' }}
+            leftIcon={{ type: 'antdesign', name: 'unlock' }}
             leftIconContainerStyle={{ marginRight:15 }}
             onChangeText={this.handlePasswordChange}
           />
@@ -120,7 +120,8 @@ const styles = StyleSheet.create({
     //backgroundColor: colors.WHITE,
     alignItems: "center",
     justifyContent: "center",
-    justifyContent: "space-between"
+    flexDirection: 'column',
+    //justifyContent: "space-between"
   },
   background: {
     flex: 1,
@@ -145,6 +146,7 @@ const styles = StyleSheet.create({
   },
   tabText: {
     color: 'black',
+    fontFamily: 'HelveticaNeue-Thin',
     margin: 30,
     fontSize: 50,
     alignSelf: "center"

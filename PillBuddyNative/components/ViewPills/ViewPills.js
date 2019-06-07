@@ -27,7 +27,7 @@ class ViewPills extends Component {
   
   componentDidMount() {
     let userId = firebase.auth().currentUser.uid
-    let pillsRef = firebase.database().ref('PillInfo/' + userId);
+    let pillsRef = firebase.database().ref('PillInfo/' + userId + "/Pills/");
     pillsRef.on('value', (snapshot) => {
       let data = snapshot.val();
       let pills = Object.values(data);
