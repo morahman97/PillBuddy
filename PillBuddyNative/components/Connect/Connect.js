@@ -302,20 +302,22 @@ export default class App extends Component {
                 console.log('Under this day, there are these pills')
                 console.log(pillsUnderDay)
                 for (var pillName in pillsUnderDay) {
-                  let pillInfo = pillsUnderDay[pillName][0]
-                  console.log('Underneath this pill, the info is ')
-                  console.log(pillInfo)
-                  console.log("Checking equality between " + pillInfo['time'].substring(0,5) + " and " + data.substring(2,8))
-                  if (pillInfo['time'].substring(0,5) == data.substring(2,7)) {
-                    if (parseInt(dataComponents[0]) == 2) {
-                      console.log('Pill not taken')
-                      pillInfo['taken'] = 2
-                    }
-                    else if (parseInt(dataComponents[0]) == 1) {
-                      console.log('Pill Taken')
-                      pillInfo['taken'] = 1
-                    }
-                  }
+                  //let pillInfo = pillsUnderDay[pillName][0]
+                  pillsUnderDay[pillName].forEach((pillInfo) => { 
+                    console.log('Underneath this pill, the info is ')
+                    console.log(pillInfo)
+                    console.log("Checking equality between " + pillInfo['time'].substring(0,5) + " and " + data.substring(2,8))
+                    if (pillInfo['time'].substring(0,5) == data.substring(2,7)) {
+                      if (parseInt(dataComponents[0]) == 2) {
+                        console.log('Pill not taken')
+                        pillInfo['taken'] = 2
+                      }
+                      else if (parseInt(dataComponents[0]) == 1) {
+                        console.log('Pill Taken')
+                        pillInfo['taken'] = 1
+                      }
+                    } 
+                  })
                 }
               }
 
