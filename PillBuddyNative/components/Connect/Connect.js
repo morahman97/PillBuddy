@@ -25,6 +25,22 @@ const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
+var firebase = require("firebase");
+
+var config = {
+  apiKey: "AIzaSyDrnrsaVw0RLyz6Gf-Ezd0dUK81DCQkCP4",
+  authDomain: "pill-buddy.firebaseapp.com",
+  databaseURL: "https://pill-buddy.firebaseio.com",
+  projectId: "pill-buddy",
+  storageBucket: "pill-buddy.appspot.com",
+  messagingSenderId: "773140406620",
+  appId: "1:773140406620:web:76284dc0f19fbe9f"
+};
+// Initialize Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+}
+
 export default class App extends Component {
   constructor(){
     super()
@@ -263,6 +279,44 @@ export default class App extends Component {
           console.log(`Recieved ${data} for characteristic ${characteristic}`);
           console.log(`Peripheral is ${peripheral}`);
           console.log(`LIKE A SOMEBOOODY ${data}`)
+          console.log('Splitting data components')
+          let dataComponenets = data.split('-');
+          console.log(dataComponenets)
+          let days = dataComponenets[3]
+          let userId = firebase.auth().currentUser.uid
+          let pillsRef = firebase.database().ref('PillInfo/' + userId + '/MetaInfo');
+          pillsRef.limitToLast(1).on('value', (snapshot) => {
+              let metaData = snapshot.val();
+              let metaInfo = Object.values(metaData);
+              console.log("printing out pill metaInfo")
+              console.log(metaInfo[0]['daysTakenJSON'])
+              let daysTakenJSON = metaInfo[0]['daysTakenJSON']
+              
+              for(var i = 0; i < days.length; i++) {
+                let day = parseInt(days.charAt(i))
+                console.log('We are looking at day ' + days.charAt(i))
+                let pillsUnderDay = daysTakenJSON[day]
+                console.log('Under this day, there are these pills')
+                console.log(pillsUnderDay)
+                for (var pillName in pillsUnderDay) {
+                  let pillInfo = pillsUnderDay[pillName][0]
+                  console.log('Underneath this pill, the info is ')
+                  console.log(pillInfo)
+                  if (pillInfo['time'].subString(0,5) == data.subString(2,8)) {
+                    if (parseInt(dataComonents[0]) == 2) {
+                      console.log('Pill not taken')
+                      pillInfo['taken'] = 2
+                    }
+                    else if (parseInt(dataComonents[0]) == 1) {
+                      console.log('Pill Taken')
+                      pillInfo['taken'] = 1
+                    }
+                  }
+                }
+              }
+
+          });
+
           
       }
     );
