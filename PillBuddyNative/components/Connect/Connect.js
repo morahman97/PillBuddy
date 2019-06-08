@@ -248,6 +248,9 @@ export default class App extends Component {
     BleManager.write(peripheral.id, service, writeCharacteristic, nextTime)
     .then(() => {
       // Success code
+      console.log("WRITINGGGGGGGGGGGGG")
+      console.log(`peripheral id is ${peripheral.id}`)
+      console.log(`service is ${service}`)
       console.log('Write: ' + nextTime);
     })
     .catch((error) => {
@@ -263,7 +266,6 @@ export default class App extends Component {
           console.log(`Recieved ${data} for characteristic ${characteristic}`);
           console.log(`Peripheral is ${peripheral}`);
           console.log(`LIKE A SOMEBOOODY ${data}`)
-          
       }
     );
     // Actions triggereng BleManagerDidUpdateValueForCharacteristic event

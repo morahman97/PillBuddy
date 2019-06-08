@@ -1,7 +1,10 @@
 import React from 'react';
-import { StyleSheet, Alert, Text, View, TextInput, Button,TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Input } from 'react-native-elements';
+import { StyleSheet, Alert, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Button, Input } from 'react-native-elements';
 import DateTimePicker from "react-native-modal-datetime-picker"
+import { stringToBytes } from 'convert-string';
+import { bytesToString } from 'convert-string';
+import BleManager from 'react-native-ble-manager';
 
 var firebase = require("firebase");
 
@@ -142,6 +145,24 @@ export default class HomePage extends React.Component {
   }
 
   writeUserData = (pillName, days,times, pillSlots, doses) => {
+    var service = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E';
+    var writeCharacteristic = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E';
+    var characteristic = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E';
+    var testTime = stringToBytes('#13-59-6-B#');
+    var peripheralId = 'EF59778A-4911-2505-E236-DA3444E1C8D6'
+
+    BleManager.connect(peripheralId);
+
+    BleManager.write(peripheralId, service, writeCharacteristic, testTime)
+    .then(() => {
+      // Success code
+      console.log('Write: ' + testTime);
+    })
+    .catch((error) => {
+      // Failure code
+      console.log(error);
+    });
+
     console.log(times);
     times = times.map(time =>{
       days.forEach(day => {
@@ -179,26 +200,27 @@ export default class HomePage extends React.Component {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.background}>
-          <View style={styles.page}>
+          <View>
             <Text style={styles.tabText}>Add New Pill</Text>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.containerPillName}>
-              <Text style={{fontFamily:'HelveticaNeue-Thin', marginBottom: 15}}> Enter name of medication</Text>
-            <Input
-              placeholder='Tap to enter'
-              onChangeText={(text) =>{this.setState({inputName: text})}}
-            />
+              <Text style={{ marginLeft: 10, fontFamily:'Helvetica', marginBottom: 15}}> Enter name of medication</Text>
+              <Input
+                placeholder='Tap to enter'
+                onChangeText={(text) =>{this.setState({inputName: text})}}
+              />
             </View>
+            </TouchableWithoutFeedback>
             <DateTimePicker
-                isVisible={this.state.isDateTimePickerVisible}
-                onConfirm={this.handleDatePicked}
-                onCancel={this.hideDateTimePicker}
-                mode = {'time'}
+              isVisible={this.state.isDateTimePickerVisible}
+              onConfirm={this.handleDatePicked}
+              onCancel={this.hideDateTimePicker}
+              mode = {'time'}
             />
           </View>
           <View style={styles.containerDayOfWeek}>
-            <Text style={{ marginLeft: 10, marginTop: 5, marginBottom: 10 }}>Select days of the week to take pill</Text>
+            <Text style={{ marginLeft: 10, marginTop: 10, fontFamily:'Helvetica', marginBottom: 10 }}>Select days to take medication</Text>
             <View style={styles.checkboxContainer}>             
               <TouchableOpacity 
                 style={this.state.inputDays.includes(0)? styles.activeCheckbox: styles.inactiveCheckbox} 
@@ -237,51 +259,53 @@ export default class HomePage extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={styles.checkboxContainer}>
-              <TouchableOpacity style={styles.timeContainer} onPress={this.showDateTimePicker}>
-                <Text>Add Time to Take Pill</Text>
-              </TouchableOpacity>
-              <View>
+          <View style={{ marginBottom:15 }}>
+            <TouchableOpacity style={styles.timeContainer} onPress={this.showDateTimePicker}>
+              <Text>Add Time to Take Pill</Text>
+            </TouchableOpacity>
+            <View>
               {this.state.inputTime.map(time => {return <Text>{time}</Text>})}
-              </View>
+            </View>
           </View>
-          <View style={styles.checkboxContainer}>
-            <TouchableOpacity 
-              style={this.state.pillSlots.includes(0)? styles.activePillSlot: styles.inactivePillSlot} 
-              onPress={() => this.toggleSlot(0)}>
-              <Text>A</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={this.state.pillSlots.includes(1)? styles.activePillSlot: styles.inactivePillSlot} 
-              onPress={() => this.toggleSlot(1)}>
-              <Text>B</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={this.state.pillSlots.includes(2)? styles.activePillSlot: styles.inactivePillSlot} 
-              onPress={() => this.toggleSlot(2)}>
-              <Text>C</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={this.state.pillSlots.includes(3)? styles.activePillSlot: styles.inactivePillSlot} 
-              onPress={() => this.toggleSlot(3)}>
-              <Text>D</Text>
-            </TouchableOpacity>
+          <View style={styles.containerCell}>
+            <Text style={{ marginLeft: 10, justifyContent: 'flex-start', marginTop: 10, fontFamily:'Helvetica', marginBottom: 10 }}>Select cell to store medication</Text>
+            <View style={styles.checkboxContainer}>
+              <TouchableOpacity 
+                style={this.state.pillSlots.includes(0)? styles.activePillSlot: styles.inactivePillSlot} 
+                onPress={() => this.toggleSlot(0)}>
+                <Text>A</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={this.state.pillSlots.includes(1)? styles.activePillSlot: styles.inactivePillSlot} 
+                onPress={() => this.toggleSlot(1)}>
+                <Text>B</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={this.state.pillSlots.includes(2)? styles.activePillSlot: styles.inactivePillSlot} 
+                onPress={() => this.toggleSlot(2)}>
+                <Text>C</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={this.state.pillSlots.includes(3)? styles.activePillSlot: styles.inactivePillSlot} 
+                onPress={() => this.toggleSlot(3)}>
+                <Text>D</Text>
+              </TouchableOpacity>
+            </View>
           </View>
+          <View style={styles.container}>
+            <TextInput 
+              placeholder='Choose doses'
+              keyboardType='numeric'
+              value={this.state.myNumber}
+              maxLength={10}  //setting limit of input
+              onChangeText={(text) => this.setState({numDoses: text})}
+            />
+          </View> 
           <Button 
             title="Add Pill" 
             onPress={() => this.writeUserData(this.state.inputName, this.state.inputDays, this.state.inputTime, this.state.pillSlots, this.state.numDoses)} 
           />
-          <View style={styles.container}>
-            <TextInput 
-                placeholder='Choose doses'
-                keyboardType='numeric'
-                value={this.state.myNumber}
-                maxLength={10}  //setting limit of input
-                onChangeText={(text) => this.setState({numDoses: text})}
-            />
-          </View> 
         </View>
-      </TouchableWithoutFeedback>
     );
   }
 }
@@ -298,20 +322,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 50,
+    //marginBottom: 50,
   },
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 50,
+    marginBottom: 15,
     height: 50,
+    width: 120,
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: '#d6d7da',
     backgroundColor: 'white',
   },
   containerPillName: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     marginBottom: 15,
     height: 95,
@@ -331,10 +356,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   containerCell: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 15,
-    height: 95,
+    height: 125,
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: '#d6d7da',
@@ -349,10 +374,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  page: {
-      //backgroundColor: '#4285f4',
-      paddingBottom: 50,
   },
   title: {
     fontSize: 19,
@@ -402,7 +423,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   checkboxContainer: {
-    flex: 1,
+    //flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
