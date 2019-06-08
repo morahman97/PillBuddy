@@ -124,7 +124,7 @@ export default class HomePage extends React.Component {
           obj['days'].forEach(day => {
             let timeToTake = []
             obj['times'].forEach(time => {
-              timeToTake[0] = {'time': time, 'taken': false}
+              timeToTake[0] = {'time': time, 'taken': 0}
             });
             daysTakenJSON[day][obj['pillName']] = timeToTake
           });
@@ -258,13 +258,21 @@ export default class HomePage extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{ marginBottom:15 }}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
             <TouchableOpacity style={styles.timeContainer} onPress={this.showDateTimePicker}>
               <Text>Add Time to Take Pill</Text>
             </TouchableOpacity>
             <View>
               {this.state.inputTime.map(time => {return <Text>{time}</Text>})}
             </View>
+            <TextInput 
+              style={styles.container}
+              placeholder='Choose doses'
+              keyboardType='numeric'
+              value={this.state.myNumber}
+              maxLength={10}  //setting limit of input
+              onChangeText={(text) => this.setState({numDoses: text})}
+            />
           </View>
           <View style={styles.containerCell}>
             <Text style={{ marginLeft: 10, justifyContent: 'flex-start', marginTop: 10, fontFamily:'Helvetica', marginBottom: 10 }}>Select cell to store medication</Text>
@@ -290,15 +298,6 @@ export default class HomePage extends React.Component {
                 <Text>D</Text>
               </TouchableOpacity>
             </View>
-          </View>
-          <View style={styles.container}>
-            <TextInput 
-              placeholder='Choose doses'
-              keyboardType='numeric'
-              value={this.state.myNumber}
-              maxLength={10}  //setting limit of input
-              onChangeText={(text) => this.setState({numDoses: text})}
-            />
           </View> 
           <Button 
             title="Add Pill" 
@@ -327,7 +326,8 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 15,
+    //marginBottom: 15,
+    marginLeft: 85,
     height: 50,
     width: 120,
     borderRadius: 4,
