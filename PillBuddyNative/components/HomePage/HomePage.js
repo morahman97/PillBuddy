@@ -184,9 +184,8 @@ export default class HomePage extends React.Component {
           <View style={styles.page}>
             <Text style={styles.tabText}>Add New Pill</Text>
             <View style={styles.containerPillName}>
+              <Text style={{fontFamily:'HelveticaNeue-Thin', marginBottom: 15}}> Enter name of medication</Text>
             <Input
-              label='Enter the Name of Medication'
-              labelStyle={{ marginBottom: 15 }}
               placeholder='Tap to enter'
               onChangeText={(text) =>{this.setState({inputName: text})}}
             />
@@ -198,29 +197,45 @@ export default class HomePage extends React.Component {
                 mode = {'time'}
             />
           </View>
-          <Text>Select days of the week to take pill</Text>
-          <View style={styles.checkboxContainer}>             
-            <TouchableOpacity style={this.state.inputDays.includes(0)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(0)}>
-              <Text>Su</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes(1)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(1)}>
-              <Text>M</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes(2)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(2)}>
-              <Text>Tu</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes(3)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(3)}>
-              <Text>W</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes(4)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(4)}>
-              <Text>Thu</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes(5)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(5)}>
-              <Text>F</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={this.state.inputDays.includes(6)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(6)}>
-              <Text>Sa</Text>
-            </TouchableOpacity>
+          <View style={styles.containerDayOfWeek}>
+            <Text style={{ marginLeft: 10, marginTop: 5, marginBottom: 10 }}>Select days of the week to take pill</Text>
+            <View style={styles.checkboxContainer}>             
+              <TouchableOpacity 
+                style={this.state.inputDays.includes(0)? styles.activeCheckbox: styles.inactiveCheckbox} 
+                onPress={() => this.toggleDay(0)}>
+                <Text>Sun</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={this.state.inputDays.includes(1)? styles.activeCheckbox: styles.inactiveCheckbox} 
+                onPress={() => this.toggleDay(1)}>
+                <Text>Mon</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={this.state.inputDays.includes(2)? styles.activeCheckbox: styles.inactiveCheckbox} 
+                onPress={() => this.toggleDay(2)}>
+                <Text>Tue</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={this.state.inputDays.includes(3)? styles.activeCheckbox: styles.inactiveCheckbox} 
+                onPress={() => this.toggleDay(3)}>
+                <Text>Wed</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={this.state.inputDays.includes(4)? styles.activeCheckbox: styles.inactiveCheckbox} 
+                onPress={() => this.toggleDay(4)}>
+                <Text>Thu</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={this.state.inputDays.includes(5)? styles.activeCheckbox: styles.inactiveCheckbox} 
+                onPress={() => this.toggleDay(5)}>
+                <Text>Fri</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={this.state.inputDays.includes(6)? styles.activeCheckbox: styles.inactiveCheckbox} 
+                onPress={() => this.toggleDay(6)}>
+                <Text>Sat</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.checkboxContainer}>
               <TouchableOpacity style={styles.timeContainer} onPress={this.showDateTimePicker}>
@@ -229,16 +244,33 @@ export default class HomePage extends React.Component {
               <View>
               {this.state.inputTime.map(time => {return <Text>{time}</Text>})}
               </View>
-              
           </View>
           <View style={styles.checkboxContainer}>
-            <TouchableOpacity style={this.state.pillSlots.includes(0)? styles.activePillSlot: styles.inactivePillSlot} onPress={() => this.toggleSlot(0)}><Text>A</Text></TouchableOpacity>
-            <TouchableOpacity style={this.state.pillSlots.includes(1)? styles.activePillSlot: styles.inactivePillSlot} onPress={() => this.toggleSlot(1)}><Text>B</Text></TouchableOpacity>
-            <TouchableOpacity style={this.state.pillSlots.includes(2)? styles.activePillSlot: styles.inactivePillSlot} onPress={() => this.toggleSlot(2)}><Text>C</Text></TouchableOpacity>
-            <TouchableOpacity style={this.state.pillSlots.includes(3)? styles.activePillSlot: styles.inactivePillSlot} onPress={() => this.toggleSlot(3)}><Text>D</Text></TouchableOpacity>
+            <TouchableOpacity 
+              style={this.state.pillSlots.includes(0)? styles.activePillSlot: styles.inactivePillSlot} 
+              onPress={() => this.toggleSlot(0)}>
+              <Text>A</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={this.state.pillSlots.includes(1)? styles.activePillSlot: styles.inactivePillSlot} 
+              onPress={() => this.toggleSlot(1)}>
+              <Text>B</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={this.state.pillSlots.includes(2)? styles.activePillSlot: styles.inactivePillSlot} 
+              onPress={() => this.toggleSlot(2)}>
+              <Text>C</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={this.state.pillSlots.includes(3)? styles.activePillSlot: styles.inactivePillSlot} 
+              onPress={() => this.toggleSlot(3)}>
+              <Text>D</Text>
+            </TouchableOpacity>
           </View>
-          
-          <Button title="Add Pill" onPress={() => this.writeUserData(this.state.inputName, this.state.inputDays, this.state.inputTime, this.state.pillSlots, this.state.numDoses)} />
+          <Button 
+            title="Add Pill" 
+            onPress={() => this.writeUserData(this.state.inputName, this.state.inputDays, this.state.inputTime, this.state.pillSlots, this.state.numDoses)} 
+          />
           <View style={styles.container}>
             <TextInput 
                 placeholder='Choose doses'
@@ -280,6 +312,26 @@ const styles = StyleSheet.create({
   },
   containerPillName: {
     alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 15,
+    height: 95,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#d6d7da',
+    backgroundColor: 'white',
+  },
+  containerDayOfWeek: {
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    marginBottom: 15,
+    height: 95,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#d6d7da',
+    backgroundColor: 'white',
+  },
+  containerCell: {
+    alignItems: 'flex-start',
     justifyContent: 'center',
     marginBottom: 15,
     height: 95,
