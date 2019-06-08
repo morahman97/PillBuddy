@@ -19,13 +19,12 @@ if (!firebase.apps.length) {
   firebase.initializeApp(config);
 }
 
-
-
 export default class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isDateTimePickerVisible: false,
+
       inputName: 'Pill',
       inputDays: [],
       inputTime: [], 
@@ -184,20 +183,11 @@ export default class HomePage extends React.Component {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.background}>
           <View style={styles.page}>
-                <Text style={styles.tabText}>Enter Pill Info</Text>
+            <Text style={styles.tabText}>Add New Pill</Text>
             <Input
-              placeholder='BASIC INPUT'/>
-            <View style={styles.container}>
-                <Text>Enter Pill Info</Text>
-            </View>
-            <View style={styles.container}>
-                <TextInput
-                placeholder="Enter the Name of Medication"
-                maxLength={20}
-                onChangeText={(text) =>{this.setState({inputName: text})}}
-                />
-            </View>
-            
+              label='Enter the Name of Medication'
+              onChangeText={(text) =>{this.setState({inputName: text})}}
+            />
             <DateTimePicker
                 isVisible={this.state.isDateTimePickerVisible}
                 onConfirm={this.handleDatePicked}
@@ -205,6 +195,7 @@ export default class HomePage extends React.Component {
                 mode = {'time'}
             />
           </View>
+          <Text>Select days of the week to take pill</Text>
           <View style={styles.checkboxContainer}>             
             <TouchableOpacity style={this.state.inputDays.includes(0)? styles.activeCheckbox: styles.inactiveCheckbox} onPress={() => this.toggleDay(0)}>
               <Text>Su</Text>

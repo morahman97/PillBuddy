@@ -9,7 +9,7 @@ import { ListItem, Overlay } from 'react-native-elements'
 
 const styles = StyleSheet.create({
   tabText: {
-    margin: 50,
+    margin: 20,
     fontSize: 40,
     alignSelf: "center"
   },
