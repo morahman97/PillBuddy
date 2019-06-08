@@ -200,10 +200,10 @@ export default class HomePage extends React.Component {
 
   render() {
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.background}>
           <View>
             <Text style={styles.tabText}>Add New Pill</Text>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.containerPillName}>
               <Text style={{ marginLeft: 10, fontFamily:'Helvetica', marginBottom: 15}}> Enter name of medication</Text>
               <Input
@@ -211,7 +211,6 @@ export default class HomePage extends React.Component {
                 onChangeText={(text) =>{this.setState({inputName: text})}}
               />
             </View>
-            </TouchableWithoutFeedback>
             <DateTimePicker
               isVisible={this.state.isDateTimePickerVisible}
               onConfirm={this.handleDatePicked}
@@ -306,6 +305,7 @@ export default class HomePage extends React.Component {
             onPress={() => this.writeUserData(this.state.inputName, this.state.inputDays, this.state.inputTime, this.state.pillSlots, this.state.numDoses)} 
           />
         </View>
+        </TouchableWithoutFeedback>
     );
   }
 }
