@@ -24,7 +24,6 @@ export default class HomePage extends React.Component {
     super(props);
     this.state = {
       isDateTimePickerVisible: false,
-
       inputName: 'Pill',
       inputDays: [],
       inputTime: [], 
@@ -184,10 +183,14 @@ export default class HomePage extends React.Component {
         <View style={styles.background}>
           <View style={styles.page}>
             <Text style={styles.tabText}>Add New Pill</Text>
+            <View style={styles.containerPillName}>
             <Input
               label='Enter the Name of Medication'
+              labelStyle={{ marginBottom: 15 }}
+              placeholder='Tap to enter'
               onChangeText={(text) =>{this.setState({inputName: text})}}
             />
+            </View>
             <DateTimePicker
                 isVisible={this.state.isDateTimePickerVisible}
                 onConfirm={this.handleDatePicked}
@@ -255,7 +258,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#4285f4',
+    backgroundColor: '#ececf4',
     padding: 10
   },
   title: {
@@ -275,15 +278,28 @@ const styles = StyleSheet.create({
     borderColor: '#d6d7da',
     backgroundColor: 'white',
   },
+  containerPillName: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 15,
+    height: 95,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#d6d7da',
+    backgroundColor: 'white',
+  },
   timeContainer: {
     width: 150,
     height: 50, 
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#d6d7da',
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center'
   },
   page: {
-      backgroundColor: '#4285f4',
+      //backgroundColor: '#4285f4',
       paddingBottom: 50,
   },
   title: {
@@ -298,6 +314,9 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: 'green',
     justifyContent: 'center', 
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#d6d7da',
     alignItems: 'center'
   },
   inactiveCheckbox: {
@@ -305,6 +324,9 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: 'white',
     justifyContent: 'center', 
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#d6d7da',
     alignItems: 'center'
   },
   activePillSlot: {
@@ -312,13 +334,19 @@ const styles = StyleSheet.create({
     height: 80,
     backgroundColor: 'green',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#d6d7da'
   },
   inactivePillSlot: {
     width: 75,
     height: 80,
     backgroundColor: 'white',
     alignItems: 'center',
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#d6d7da',
     justifyContent: 'center'
   },
   checkboxContainer: {
