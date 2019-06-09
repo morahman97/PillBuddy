@@ -4,6 +4,7 @@ import { View, Button, AsyncStorage, Alert, Platform, PushNotificationIOS} from 
 import firebase from 'firebase';
 import Menu from './components/Menu/Menu';
 import Header from './Header';
+import NotifService from './components/HomePage/HomePage';
 import LoginScreen from './LoginScreen';
 
 export default class App extends Component {
@@ -82,17 +83,11 @@ export default class App extends Component {
       console.log('onNotification:');
       
         const localNotification = new firebase.notifications.Notification({
-//          sound: 'sampleaudio',
           show_in_foreground: true,
         })
-//        .setSound('sampleaudio.wav')
         .setNotificationId(notification.notificationId)
         .setTitle(notification.title)
         .setBody(notification.body)
-//        .android.setChannelId('fcm_FirebaseNotifiction_default_channel') // e.g. the id you chose above
-  //      .android.setSmallIcon('@drawable/ic_launcher') // create this icon in Android Studio
-    //    .android.setColor('#000000') // you can set a color here
-      //  .android.setPriority(firebase.notifications.Android.Priority.High);
 
         firebase.notifications()
           .displayNotification(localNotification)
