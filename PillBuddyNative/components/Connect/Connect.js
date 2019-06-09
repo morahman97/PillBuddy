@@ -288,6 +288,10 @@ export default class App extends Component {
           let days = dataComponents[3]
           let userId = firebase.auth().currentUser.uid
           let pillsRef = firebase.database().ref('PillInfo/' + userId + '/MetaInfo');
+          let newPostKey = 0
+          //firebase.database().ref('PillInfo/' + userId + '/MetaInfo').limitToLast(1).on('value', (snap) => {
+          //  newPostKey = snap.key;
+          //});
           pillsRef.limitToLast(1).on('value', (snapshot) => {
               let metaData = snapshot.val();
               let metaInfo = Object.values(metaData);
@@ -323,6 +327,20 @@ export default class App extends Component {
 
               console.log('Final json is ')
               console.log(daysTakenJSON)
+              console.log("About to push to database")
+              let fKey = Object.keys(snapshot.val())[0]
+              console.log(snapshot.key);
+              firebase.database().ref('PillInfo/' + userId + '/MetaInfo/' + fKey).update({'daysTakenJSON': daysTakenJSON});
+             /*pillsRef.push({
+               daysTakenJSON
+              }).then((data)=>{
+                //success callback
+                console.log('SUCCESS')
+                // console.log(this.state)
+              }).catch((error)=>{
+                //error callback
+                console.log('error ')
+              })*/  
 
           });
 
