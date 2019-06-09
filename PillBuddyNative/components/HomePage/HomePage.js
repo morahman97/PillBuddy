@@ -262,9 +262,6 @@ export default class HomePage extends React.Component {
             <TouchableOpacity style={styles.timeContainer} onPress={this.showDateTimePicker}>
               <Text>Add Time to Take Pill</Text>
             </TouchableOpacity>
-            <View>
-              {this.state.inputTime.map(time => {return <Text>{time}</Text>})}
-            </View>
             <TextInput 
               style={styles.container}
               placeholder='Choose doses'
@@ -273,6 +270,9 @@ export default class HomePage extends React.Component {
               maxLength={10}  //setting limit of input
               onChangeText={(text) => this.setState({numDoses: text})}
             />
+          </View>
+          <View>
+            {this.state.inputTime.map(time => {return <Text>{time}</Text>})}
           </View>
           <View style={styles.containerCell}>
             <Text style={{ marginLeft: 10, justifyContent: 'flex-start', marginTop: 10, fontFamily:'Helvetica', marginBottom: 10 }}>Select cell to store medication</Text>
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    //marginBottom: 15,
+    // marginBottom: 15,
     marginLeft: 85,
     height: 50,
     width: 120,

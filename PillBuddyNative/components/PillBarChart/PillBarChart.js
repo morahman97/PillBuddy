@@ -48,7 +48,7 @@ export default class PillBarChart extends React.Component {
             console.log(data)
             for (var key in data) {
                 console.log(data[key][0]['taken'])
-                if (!data[key][0]['taken']) numMissed += 1
+                if (data[key][0]['taken'] == 1) numMissed += 1
             }
             tempArray.push(numMissed);
         });

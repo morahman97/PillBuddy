@@ -57,7 +57,8 @@ export default class AnalyticsPage extends React.Component {
     parsePillData = (mondayData) => {
         let componentArray = []
         for (var key in mondayData) {
-            if (!mondayData[key]['taken']) {
+            console.log(mondayData[key][0]['taken'])
+            if (mondayData[key][0]['taken'] == 1) {
                 let textValue = <Text style={styles.missedPill}>{key}: {this.parseTime(mondayData[key][0]['time'])}</Text>
                 componentArray.push(textValue)
             }
