@@ -1,10 +1,9 @@
 import React from 'react';
-import { StyleSheet, Alert, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, Alert, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, PushNotificationIOS, Keyboard } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import DateTimePicker from "react-native-modal-datetime-picker"
 import { stringToBytes } from 'convert-string';
 import { bytesToString } from 'convert-string';
-import PushNotification from 'react-native-push-notification';
 import BleManager from 'react-native-ble-manager';
 
 var firebase = require("firebase");
@@ -194,6 +193,12 @@ export default class HomePage extends React.Component {
     })
     this.updatePillTakenSchedule();
     Alert.alert('Pill saved successfully!')
+    let fireDate = new Date(Date.now() + 60 * 1000).getTime();
+    PushNotificationIOS.scheduleLocalNotification({
+    fireDate: fireDate,
+    alertTitle: 'Test',
+    alertBody: 'Please work',
+    })
   }
   someFunction = () => {
     console.log("HELLO")
@@ -442,90 +447,3 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
 });
-
-
-class NotifService {
-
-  constructor(onRegister, onNotification) {
-    this.configure(onRegister, onNotification);
-
-    this.lastId = 0;
-  }
-
-  configure(onRegister, onNotification, gcm = "") {
-    PushNotification.configure({
-      // (optional) Called when Token is generated (iOS and Android)
-      onRegister: onRegister, //this._onRegister.bind(this),
-
-      // (required) Called when a remote or local notification is opened or received
-      onNotification: onNotification, //this._onNotification,
-
-      // IOS ONLY (optional): default: all - Permissions to register.
-      permissions: {
-        alert: true,
-        badge: true,
-        sound: true
-      },
-
-      // Should the initial notification be popped automatically
-      // default: true
-      popInitialNotification: true,
-
-      /**
-        * (optional) default: true
-        * - Specified if permissions (ios) and token (android and ios) will requested or not,
-        * - if not, you must call PushNotificationsHandler.requestPermissions() later
-        */
-      requestPermissions: true,
-    });
-  }
-
-  localNotif() {
-    this.lastId++;
-    PushNotification.localNotification({
-
-      /* iOS only properties */
-      alertAction: 'view', // (optional) default: view
-      category: null, // (optional) default: null
-      userInfo: null, // (optional) default: null (object containing additional notification data)
-
-      /* iOS and Android properties */
-      title: "Local Notification", // (optional)
-      message: "My Notification Message", // (required)
-      playSound: false, // (optional) default: true
-      soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
-      number: '10', // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
-      actions: '["Yes", "No"]',  // (Android only) See the doc for notification actions to know more
-    });
-  }
-
-  scheduleNotif() {
-    this.lastId++;
-    PushNotification.localNotificationSchedule({
-      date: new Date(Date.now() + (30 * 1000)), // in 30 secs
-
-      /* iOS only properties */
-      alertAction: 'view', // (optional) default: view
-      category: null, // (optional) default: null
-      userInfo: null, // (optional) default: null (object containing additional notification data)
-
-      /* iOS and Android properties */
-      title: "Scheduled Notification", // (optional)
-      message: "My Notification Message", // (required)
-      playSound: true, // (optional) default: true
-      soundName: 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
-    });
-  }
-
-  checkPermission(cbk) {
-    return PushNotification.checkPermissions(cbk);
-  }
-
-  cancelNotif() {
-    PushNotification.cancelLocalNotifications({id: ''+this.lastId});
-  }
-
-  cancelAll() {
-    PushNotification.cancelAllLocalNotifications();
-  }
-}

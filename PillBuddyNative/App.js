@@ -4,7 +4,6 @@ import { View, Button, AsyncStorage, Alert, Platform, PushNotificationIOS} from 
 import firebase from 'firebase';
 import Menu from './components/Menu/Menu';
 import Header from './Header';
-import NotifService from './components/HomePage/HomePage';
 import LoginScreen from './LoginScreen';
 
 export default class App extends Component {
@@ -33,6 +32,8 @@ export default class App extends Component {
     PushNotificationIOS.requestPermissions([permissions]);
     this.checkPermission();
     this.createNotificationListeners();
+    this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+
   }
 
   componentWillUnmount() {
