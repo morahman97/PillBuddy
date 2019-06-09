@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     //backgroundColor: colors.WHITE,
+    backgroundColor: '#ececf4',
     alignItems: "center",
     justifyContent: "center",
     flexDirection: 'column',
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     width: "80%"
   },
   tabText: {
-    color: 'black',
+    color: '#428AF8',
     fontFamily: 'HelveticaNeue-Thin',
     margin: 30,
     fontSize: 50,

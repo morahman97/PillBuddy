@@ -193,11 +193,12 @@ export default class HomePage extends React.Component {
     })
     this.updatePillTakenSchedule();
     Alert.alert('Pill saved successfully!')
+
     let fireDate = new Date(Date.now() + 60 * 1000).getTime();
     PushNotificationIOS.scheduleLocalNotification({
-    fireDate: fireDate,
-    alertTitle: 'Test',
-    alertBody: 'Please work',
+      fireDate: fireDate,
+      alertTitle: 'Time for your next medication!',
+      alertBody: `Please take your next dose of ${pillName}`,
     })
   }
   someFunction = () => {
