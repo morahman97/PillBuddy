@@ -170,7 +170,7 @@ export default class HomePage extends React.Component {
       console.log(error);
     });
 
-    console.log(times);
+    //console.log(times);
     times = times.map(time =>{
       days.forEach(day => {
         return time += JSON.stringify(day)
@@ -182,7 +182,7 @@ export default class HomePage extends React.Component {
       });
       return time
     })
-    console.log(times)
+    //console.log(times)
     userId = firebase.auth().currentUser.uid
     firebase.database().ref('PillInfo/' + userId + '/Pills').push({
         pillName,
@@ -201,12 +201,26 @@ export default class HomePage extends React.Component {
     this.updatePillTakenSchedule();
     Alert.alert('Pill saved successfully!')
 
+    var now = new Date()
+    var currDay = now.getDay(); // Get day of week from 0 - 6
+    var currHour = now.getHours()
+    var currMin = now.getMinutes()
+    for (let i = 0; i < times.length; i++) {
+      console.log(times)
+      var nextHour = parseInt(times[i].substring(0,2))
+      var nextMin = parseInt(times[i].substring(3,5))
+      var nextDate = new Date(2019, 5, 9, nextHour, nextMin) //TODO change the 9 to 10 on Monday
+      var diff = Math.abs(now.getTime() - nextDate.getTime())
+      var diffTime = Math.ceil(diff);
+      console.log('diffTime is' + diffTime)
+      PushNotificationIOS.scheduleLocalNotification({
+        fireDate: new Date(Date.now() + diffTime).getTime(),
+        alertTitle: 'Time for your next medication!',
+        alertBody: `Please take your next dose of ${pillName}`,
+      })
+    }
+
     let fireDate = new Date(Date.now() + 60 * 1000).getTime();
-    PushNotificationIOS.scheduleLocalNotification({
-      fireDate: fireDate,
-      alertTitle: 'Time for your next medication!',
-      alertBody: `Please take your next dose of ${pillName}`,
-    })
   }
   someFunction = () => {
     console.log("HELLO")
@@ -290,7 +304,7 @@ export default class HomePage extends React.Component {
             {this.state.inputTime.map(time => {return <Text>{time}, </Text>})}
           </View>
           <View style={styles.containerCell}>
-            <Text style={{ marginLeft: 10, justifyContent: 'flex-start', marginTop: 10, fontFamily:'Helvetica', marginBottom: 10 }}>Select cell to store medication</Text>
+            <Text style={{ marginLeft: 10, justifyContent: 'flex-start', fontFamily:'Helvetica', marginBottom: 10 }}>Select cell to store medication</Text>
             <View style={styles.cellPicker}>
               <TouchableOpacity 
                 style={this.state.pillSlots.includes(0)? styles.activePillSlot: styles.inactivePillSlot} 
@@ -375,7 +389,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 25,
     marginBottom: 25,
-    height: 125,
+    height: 145,
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: '#d6d7da',
@@ -440,12 +454,13 @@ const styles = StyleSheet.create({
   },
   checkboxContainer: {
     //flex: 1,
+    marginLeft: 20,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
   cellPicker: {
     //flex: 1,
-    marginLeft: 25,
+    marginLeft: 45,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },

@@ -73,6 +73,7 @@ var styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     flexDirection: 'column',
+    backgroundColor: '#ececf4',
   },
   tabText: {
     margin: 50,
