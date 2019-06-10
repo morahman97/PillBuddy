@@ -61,10 +61,10 @@ class TabAnalytics extends React.Component {
   }
 }
 const TabNavigator = createBottomTabNavigator({
-  History: TabHistory,
   Pills: TabPills,
+  History: TabAnalytics,
   Settings: TabSettings,
-  BarChart: TabAnalytics
+  
 });
 
 var styles = StyleSheet.create({
