@@ -42,7 +42,7 @@ export default class AnalyticsPage extends React.Component {
             let metaInfo = Object.values(data);
             console.log("printing out pill data")
             console.log(metaInfo[0]['daysTakenJSON'][0])
-            var tempArray = this.parsePillData(metaInfo[0]['daysTakenJSON'][0]);
+            var tempArray = this.parsePillData(metaInfo[0]['daysTakenJSON'][1]);
             this.setState({
                 dataToDisplay: tempArray
             })
@@ -59,7 +59,7 @@ export default class AnalyticsPage extends React.Component {
         let componentArray = []
         for (var key in mondayData) {
             console.log(mondayData[key][0]['taken'])
-            if (mondayData[key][0]['taken'] == 1) {
+            if (mondayData[key][0]['taken'] == 2) {
                 let textValue = <Text style={styles.missedPill}>{key}: {this.parseTime(mondayData[key][0]['time'])}</Text>
                 componentArray.push(textValue)
             }

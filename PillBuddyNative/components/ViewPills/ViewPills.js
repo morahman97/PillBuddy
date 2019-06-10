@@ -6,6 +6,7 @@ import firebase from 'firebase'
 import FloatingActionButton from 'react-native-action-button';
 import HomePage from '../../components/HomePage/HomePage';
 import { ListItem, Overlay } from 'react-native-elements'
+//import console = require('console');
 
 const styles = StyleSheet.create({
   tabText: {
@@ -47,9 +48,25 @@ class ViewPills extends Component {
     let userId = firebase.auth().currentUser.uid
     let pillsRef = firebase.database().ref('PillInfo/' + userId + "/Pills/");
     pillsRef.on('value', (snapshot) => {
+      let fakePill = {
+        days: [0,1],
+        doses: '1',
+        pillName: 'Viagra',
+        pillSlots: [0],
+        times: ["03-55-06-3"]
+
+      }
+      console.log('We are here')
       let data = snapshot.val();
-      let pills = Object.values(data);
-      this.setState({pills});
+      console.log(data)
+      
+     
+        pillsInfo = Object.values(data);
+       
+      
+      //this.setState({pills: fakePill});
+      this.setState({pills: pillsInfo});
+
     });
   }
 
