@@ -42,11 +42,18 @@ export default class HomePage extends React.Component {
     this.setState({ isDateTimePickerVisible: false });
   };
 
+  makeString = (val) => {
+    return val < 10 ? ('0'+val.toString()) : val.toString()
+  }
   handleDatePicked = date => {
     console.log("A date has been picked: ", date);
-    date = JSON.stringify(date)
+    console.log(typeof(date))
+    date = this.makeString(date.getHours()) + '-' + this.makeString(date.getMinutes()) + '-'
+    console.log(date)
+    
+
     var tempArray = this.state.inputTime;
-    date = date.substring(date.indexOf('T')+1,date.length - 9).split(':').join('-') + '-'
+   // date = date.substring(date.indexOf('T')+1,date.length - 9).split(':').join('-') + '-'
     tempArray.push(date);
     console.log(date)
     console.log("Data is  " + tempArray)

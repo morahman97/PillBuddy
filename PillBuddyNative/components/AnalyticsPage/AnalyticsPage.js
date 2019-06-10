@@ -51,6 +51,7 @@ export default class AnalyticsPage extends React.Component {
 
     parseTime  = (time) => {
         timeSubstring = time.substring(0,5).split('-').join(':')
+        console.log("The time we set is " + timeSubstring)
         return timeSubstring
     }
 
