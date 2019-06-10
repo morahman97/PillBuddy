@@ -118,7 +118,7 @@ export default class AnalyticsPage extends React.Component {
 
 var styles = StyleSheet.create({
     container: {
-        backgroundColor: '#4285f4', 
+        backgroundColor: '#ececf4', 
         flex: 1
     },
 
@@ -126,17 +126,17 @@ var styles = StyleSheet.create({
       marginTop: 50,
       marginBottom: 20,
       fontSize: 40,
-      color: 'white'
+      color: 'black'
     },
     chartTitle: {
         alignItems: 'center',
         marginTop: 30,
         marginBottom: 20,
-        color: 'white'
+        color: 'black'
     },
     chartTitleText: {
         fontSize: 30,
-        color: 'white'
+        color: 'black'
     },
     showInfo: {
         display: 'none'
@@ -153,11 +153,11 @@ var styles = StyleSheet.create({
         fontSize: 30,
         marginTop: 20,
         marginBottom: 10,
-        color: 'white'
+        color: 'black'
     },
     missedPill: {
         fontSize: 20,
         marginBottom: 10,
-        color: 'white'
+        color: 'black'
     }
   });
